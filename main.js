@@ -9,13 +9,15 @@ import './assets/styles/index.scss';
 createIcons({ icons: { FolderOpen } });
 
 const player = document.querySelector('#player');
+const cartridgeLabel = document.querySelector('#cartridge-label');
 const openButton = document.querySelector('#open-cart');
 const fileInput = document.querySelector('#cart-file');
 const filename = document.querySelector('#filename');
 const status = document.querySelector('#status');
 const runtimePath = new URL(runtimeUrl, window.location.href).href;
 const playerLogicPath = new URL(playerLogicUrl, window.location.href).href;
-player.innerHTML = new DOMParser().parseFromString(shell, 'text/html').body.innerHTML;
+const playerDocument = new DOMParser().parseFromString(shell, 'text/html');
+player.prepend(document.importNode(playerDocument.querySelector('#body'), true));
 window.p8_runtime_url = runtimePath;
 openButton.disabled = true;
 const playerReady = new Promise((resolve, reject) => {
@@ -120,13 +122,16 @@ fileInput.addEventListener('change', async () => {
 
   openButton.disabled = true;
   status.textContent = 'Loading...';
+  const labelWasHidden = cartridgeLabel.hidden;
   try {
     const cartridge = decodeCartridge(new Uint8Array(await file.arrayBuffer()));
+    cartridgeLabel.hidden = true;
     await startPlayer(cartridge, file);
     window.p8_give_focus();
     filename.textContent = file.name;
     status.textContent = '';
   } catch (error) {
+    cartridgeLabel.hidden = labelWasHidden;
     status.textContent = error.message;
   } finally {
     openButton.disabled = false;
