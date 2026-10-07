@@ -1,0 +1,83 @@
+﻿<html>
+  <head>
+    <title>PICO-8 Cartridge</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <script src="./assets/logic/player.js"></script>
+    <link rel="stylesheet" href="./assets/styles/player.scss" />
+  </head>
+
+  <body class="p8-style-body">
+    <div id="body">
+      <div id="p8_frame" class="p8-style-p8_frame">
+        <div
+          id="p8_menu_buttons_touch"
+          class="p8-style-p8_menu_buttons_touch-4"
+        >
+          <div class="p8_menu_button p8-style-p8b_full-5" id="p8b_full"></div>
+          <div class="p8_menu_button p8-style-p8b_sound-6" id="p8b_sound"></div>
+          <div class="p8_menu_button p8-style-p8b_close-7" id="p8b_close"></div>
+        </div>
+
+        <div id="p8_container" class="p8-style-p8_container-8">
+          <div
+            id="p8_start_button"
+            class="p8_start_button p8-style-p8_start_button-9"
+          >
+            <img width="80" height="80" src="" class="p8-style-img-10" />
+          </div>
+
+          <div id="p8_playarea" class="p8-style-p8_playarea-11">
+            <div
+              id="touch_controls_background"
+              class="p8-style-touch_controls_background-12"
+            >
+              &nbsp
+            </div>
+
+            <div class="p8-style-div-13">
+              <canvas class="emscripten" id="canvas"> </canvas>
+              <div
+                class="p8_menu_buttons p8-style-p8_menu_buttons-14"
+                id="p8_menu_buttons"
+              >
+                <div
+                  class="p8_menu_button p8-style-p8b_controls-15"
+                  id="p8b_controls"
+                ></div>
+                <div
+                  class="p8_menu_button p8-style-p8b_pause-16"
+                  id="p8b_pause"
+                ></div>
+                <div
+                  class="p8_menu_button p8-style-p8b_sound-17"
+                  id="p8b_sound"
+                ></div>
+                <div
+                  class="p8_menu_button p8-style-p8b_full-18"
+                  id="p8b_full"
+                ></div>
+              </div>
+            </div>
+
+            <div id="touch_controls_gfx" class="p8-style-touch_controls_gfx-19">
+              <img
+                src=""
+                id="controls_right_panel"
+                class="p8-style-controls_right_panel-20"
+              />
+              <img
+                src=""
+                id="controls_left_panel"
+                class="p8-style-controls_left_panel-21"
+              />
+            </div>
+            <textarea
+              id="codo_textarea"
+              class="emscripten p8-style-codo_textarea-22"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

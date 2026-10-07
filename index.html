@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="sr-Latn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#171719" />
+    <title>PICO-8 Player</title>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>PICO-8 <span>Player</span></h1>
+        <button id="open-cart" type="button">
+          <i data-lucide="folder-open" aria-hidden="true"></i>
+          Otvori igru
+        </button>
+        <input id="cart-file" type="file" accept=".p8.png" hidden />
+      </header>
+      <iframe id="player" title="PICO-8 igra" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <footer>
+        <span id="filename">Nijedna igra nije izabrana</span>
+        <span id="status" role="status" aria-live="polite"></span>
+      </footer>
+    </main>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
