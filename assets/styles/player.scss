@@ -140,6 +140,11 @@ canvas {
 .p8-style-div-13 {
   display: flex;
   position: relative;
+
+  canvas {
+    border: 6px solid #000;
+    border-radius: 3px;
+  }
 }
 
 .p8-style-p8_menu_buttons-14 {
@@ -150,22 +155,22 @@ canvas {
 
 .p8-style-p8b_controls-15 {
   position: absolute;
-  bottom: 170px;
+  top: 150px;
 }
 
 .p8-style-p8b_pause-16 {
   position: absolute;
-  bottom: 120px;
+  top: 100px;
 }
 
 .p8-style-p8b_sound-17 {
   position: absolute;
-  bottom: 70px;
+  top: 50px;
 }
 
 .p8-style-p8b_full-18 {
   position: absolute;
-  bottom: 20px;
+  top: 0px;
 }
 
 .p8-style-touch_controls_gfx-19 {

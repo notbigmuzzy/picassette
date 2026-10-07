@@ -128,7 +128,10 @@ fileInput.addEventListener('change', async () => {
     cartridgeLabel.hidden = true;
     await startPlayer(cartridge, file);
     window.p8_give_focus();
-    filename.textContent = file.name;
+    const playingLabel = document.createElement('span');
+    playingLabel.className = 'playing-label';
+    playingLabel.textContent = 'Playing: ';
+    filename.replaceChildren(playingLabel, file.name.replace(/\.p8\.png$/i, ''));
     status.textContent = '';
   } catch (error) {
     cartridgeLabel.hidden = labelWasHidden;
