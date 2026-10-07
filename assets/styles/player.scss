@@ -9,9 +9,15 @@
 
 @media screen and (min-width: 512px) {
   .p8_menu_button {
-    width: 24px;
-    margin-left: 12px;
-    margin-bottom: 8px;
+    width: 32px;
+    height: 32px;
+    margin-left: 10px;
+    margin-bottom: 18px;
+
+    img {
+      width: 32px !important;
+      height: 32px !important;
+    }
   }
 }
 .p8_menu_button:hover {
@@ -144,17 +150,17 @@ canvas {
 
 .p8-style-p8b_controls-15 {
   position: absolute;
-  bottom: 125px;
+  bottom: 170px;
 }
 
 .p8-style-p8b_pause-16 {
   position: absolute;
-  bottom: 90px;
+  bottom: 120px;
 }
 
 .p8-style-p8b_sound-17 {
   position: absolute;
-  bottom: 55px;
+  bottom: 70px;
 }
 
 .p8-style-p8b_full-18 {

@@ -1,15 +1,28 @@
+@font-face {
+  font-family: "C64 Pro Mono";
+  src:
+    url("../fonts/C64_Pro_Mono-STYLE.woff2") format("woff2"),
+    url("../fonts/C64_Pro_Mono-STYLE.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   color-scheme: dark;
-  font-family: "Lucida Console", "DejaVu Sans Mono", monospace;
+  font-family: "C64 Pro Mono", monospace;
   color: #efefef;
   background: #171719;
   --accent: #ff477e;
   --muted: #a6a6ac;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -21,6 +34,18 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  isolation: isolate;
+  background: #171719;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url("../wall.png") center / cover no-repeat;
+  opacity: 0.05;
 }
 
 main {
@@ -28,9 +53,23 @@ main {
   margin: 0 auto;
 }
 
-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
-h1 { margin: 0; font-size: 22px; letter-spacing: 0; }
-h1 span { color: var(--muted); font-size: 16px; font-weight: normal; }
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+h1 {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: 0;
+}
+h1 span {
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: normal;
+}
 
 button {
   display: inline-flex;
@@ -45,26 +84,55 @@ button {
   color: #171719;
   font: inherit;
   font-size: 13px;
-  font-weight: bold;
   cursor: pointer;
 }
 
-button svg { width: 18px; height: 18px; }
-button:hover { background: #ff709b; }
-button:focus-visible { outline: 2px solid #29d8b2; outline-offset: 4px; }
-button:disabled { opacity: 0.5; cursor: wait; }
+button svg {
+  width: 20px;
+  height: 20px;
+}
+#open-cart svg {
+  stroke-width: 3;
+}
+button:hover {
+  background: #ff709b;
+}
+button:focus-visible {
+  outline: 2px solid #29d8b2;
+  outline-offset: 4px;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
 
-#player { position: relative; isolation: isolate; display: block; width: 100%; height: min(800px, calc(100vw - 32px)); overflow: hidden; }
+#player {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  width: 100%;
+  height: min(800px, calc(100vw - 32px));
+  overflow: hidden;
+}
 #player::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
   background: #606060;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 40px),
+    calc(100% - 40px) 100%,
+    0 100%
+  );
 }
-#player .p8-style-p8_frame { max-width: 100%; height: min(800px, calc(100vw - 32px)); }
+#player .p8-style-p8_frame {
+  max-width: 100%;
+  height: min(800px, calc(100vw - 32px));
+}
 #cartridge-label {
   position: absolute;
   top: 50%;
@@ -79,15 +147,45 @@ button:disabled { opacity: 0.5; cursor: wait; }
   line-height: 1.6;
   pointer-events: none;
 }
-#cartridge-label[hidden] { display: none; }
-#cartridge-label strong { display: block; font-size: 18px; margin-bottom: 8px; }
-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 16px; font-size: 12px; line-height: 1.6; color: var(--muted); }
-footer span { overflow-wrap: anywhere; min-width: 0; }
-#status { color: #ffcc66; }
+#cartridge-label[hidden] {
+  display: none;
+}
+#cartridge-label strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+footer span {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+#status {
+  color: #ffcc66;
+}
 
 @media (max-width: 480px) {
-  main { margin-top: 20px; }
-  header { flex-wrap: wrap; }
-  h1 { font-size: 20px; }
-  h1 span { display: block; margin-top: 4px; font-size: 13px; }
+  main {
+    margin-top: 20px;
+  }
+  header {
+    flex-wrap: wrap;
+  }
+  h1 {
+    font-size: 20px;
+  }
+  h1 span {
+    display: block;
+    margin-top: 4px;
+    font-size: 13px;
+  }
 }
