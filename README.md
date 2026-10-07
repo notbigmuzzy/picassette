@@ -32,6 +32,10 @@ Currently supports **.p8.png cartridges only**; text-based `.p8` files are not s
 
 ---
 
+<img width="1422" height="796" alt="Screenshot_2026-10-08_00-14-28" src="https://github.com/user-attachments/assets/c73c7832-7b69-4b1b-bb85-464d00c9e9a1" />
+
+---
+
 ## Disclaimer
 
 picassette is an independent project and is not affiliated with, endorsed by, or sponsored by Lexaloffle Games or the official PICO-8 project. It is simply a convenient web loader for PICO-8 cartridges.
