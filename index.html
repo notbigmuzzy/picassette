@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="sr-Latn">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,13 +12,13 @@
         <h1>PICO-8 <span>Player</span></h1>
         <button id="open-cart" type="button">
           <i data-lucide="folder-open" aria-hidden="true"></i>
-          Otvori igru
+          Open game
         </button>
         <input id="cart-file" type="file" accept=".p8.png" hidden />
       </header>
-      <iframe id="player" title="PICO-8 igra" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div id="player" aria-label="PICO-8 game"></div>
       <footer>
-        <span id="filename">Nijedna igra nije izabrana</span>
+        <span id="filename">No game selected</span>
         <span id="status" role="status" aria-live="polite"></span>
       </footer>
     </main>

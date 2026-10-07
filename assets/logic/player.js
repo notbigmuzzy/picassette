@@ -1074,13 +1074,6 @@ function p8_initialize() {
     event.preventDefault();
   });
 
-  document
-    .getElementById("p8_container")
-    .addEventListener("click", function () {
-      p8_create_audio_context();
-      p8_run_cart();
-    });
-
   var click_handlers = {
     p8b_full: function () {
       p8_request_fullscreen();

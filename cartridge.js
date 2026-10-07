@@ -5,11 +5,11 @@ export function decodeCartridge(contents) {
   try {
     image = decode(contents, { checkCrc: true });
   } catch {
-    throw new Error('Fajl nije validan PNG cartridge.');
+    throw new Error('The file is not a valid PNG cartridge.');
   }
 
   if (image.width !== 160 || image.height !== 205 || image.depth !== 8 || image.channels !== 4) {
-    throw new Error('PICO-8 cartridge mora biti 160 x 205 RGBA PNG.');
+    throw new Error('A PICO-8 cartridge must be a 160 x 205 RGBA PNG.');
   }
 
   const cartridge = new Uint8Array(32768);

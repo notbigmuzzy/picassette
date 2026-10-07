@@ -1,7 +1,7 @@
 import { createIcons, FolderOpen } from 'lucide';
 import shell from './player.html?raw';
 import playerLogicUrl from './assets/logic/player.js?url';
-import playerStyles from './assets/styles/player.scss?inline';
+import './assets/styles/player.scss';
 import runtimeUrl from './picoplayer.js?url';
 import { decodeCartridge } from './cartridge.js';
 import './assets/styles/index.scss';
@@ -15,62 +15,90 @@ const filename = document.querySelector('#filename');
 const status = document.querySelector('#status');
 const runtimePath = new URL(runtimeUrl, window.location.href).href;
 const playerLogicPath = new URL(playerLogicUrl, window.location.href).href;
-const playerDocument = shell
-  .replace('src="./assets/logic/player.js"', `src="${playerLogicPath}"`)
-  .replace('<link rel="stylesheet" href="./assets/styles/player.scss">', `<style>${playerStyles}</style>`);
+player.innerHTML = new DOMParser().parseFromString(shell, 'text/html').body.innerHTML;
+window.p8_runtime_url = runtimePath;
+openButton.disabled = true;
+const playerReady = new Promise((resolve, reject) => {
+  const script = document.createElement('script');
+  script.src = playerLogicPath;
+  script.onload = () => {
+    document.removeEventListener('DOMContentLoaded', window.p8_initialize);
+    if (!window.Module) window.p8_initialize();
+    document.querySelector('#p8_start_button').style.display = 'none';
+    resolve();
+  };
+  script.onerror = () => reject(new Error('Could not load the PICO-8 player.'));
+  document.body.appendChild(script);
+});
+let runtimeReady;
 
 openButton.addEventListener('click', () => fileInput.click());
 
-function startPlayer(cartridge, name) {
-  return new Promise((resolve, reject) => {
+async function startPlayer(cartridge, file) {
+  await playerReady;
+  if (runtimeReady) {
+    await runtimeReady;
+    window.p8_create_audio_context();
+    window._cartdat = cartridge;
+    window._cartname = [file.name];
+    window._cdpos = 0;
+    window.codo_command = 6;
+    await new Promise((resolve, reject) => {
+      const timeout = window.setTimeout(() => {
+        reject(new Error('Could not start the new game.'));
+      }, 20000);
+      function checkReady() {
+        if (window.codo_command === 6 || !(window.pico8_state.frame_number > 0)) {
+          window.requestAnimationFrame(checkReady);
+          return;
+        }
+        window.clearTimeout(timeout);
+        resolve();
+      }
+      checkReady();
+    });
+    return;
+  }
+
+  runtimeReady = new Promise((resolve, reject) => {
     let settled = false;
     const timeout = window.setTimeout(() => {
-      finish(new Error(cartridge ? 'Ovaj web export ne moze da pokrene izabrani cartridge.' : 'Player se nije pokrenuo.'));
-      if (cartridge) startPlayer().catch(() => {});
+      finish(new Error('This web export cannot run the selected cartridge.'));
     }, 20000);
 
     function finish(error) {
       if (settled) return;
       settled = true;
       window.clearTimeout(timeout);
-      player.onload = null;
       if (error) reject(error);
       else resolve();
     }
 
-    player.onload = () => {
-      const frame = player.contentWindow;
-      frame.p8_runtime_url = runtimePath;
-      frame.Module.noInitialRun = !cartridge;
-      if (cartridge) {
-        frame.Module.preRun = [() => {
-          frame._cartdat = cartridge;
-          frame._cartname = [name];
-          frame._cdpos = 0;
-        }];
-      }
-      frame.Module.postRun = [() => {
-        function checkReady() {
-          if (settled) return;
-          if (cartridge && !(frame.pico8_state.frame_number > 0)) {
-            frame.requestAnimationFrame(checkReady);
-            return;
-          }
-          if (cartridge) frame.focus();
-          finish();
+    window.Module.preRun = [() => {
+      window._cartdat = cartridge;
+      window._cartname = [file.name];
+      window._cdpos = 0;
+    }];
+    window.Module.postRun = [() => {
+      function checkReady() {
+        if (settled) return;
+        if (!(window.pico8_state.frame_number > 0)) {
+          window.requestAnimationFrame(checkReady);
+          return;
         }
-        checkReady();
-      }];
-      frame.Module.onAbort = () => finish(new Error('PICO-8 runtime nije mogao da se pokrene.'));
-      try {
-        frame.p8_run_cart();
-        frame.p8_script.onerror = () => finish(new Error('PICO-8 runtime nije mogao da se ucita.'));
-      } catch {
-        finish(new Error('PICO-8 player nije dostupan u ovom browseru.'));
+        finish();
       }
-    };
-    player.srcdoc = playerDocument;
+      checkReady();
+    }];
+    window.Module.onAbort = () => finish(new Error('Could not start the PICO-8 runtime.'));
+    try {
+      window.p8_run_cart();
+      window.p8_script.onerror = () => finish(new Error('Could not load the PICO-8 runtime.'));
+    } catch {
+      finish(new Error('The PICO-8 player is not available in this browser.'));
+    }
   });
+  await runtimeReady;
 }
 
 fileInput.addEventListener('change', async () => {
@@ -81,20 +109,21 @@ fileInput.addEventListener('change', async () => {
   status.textContent = '';
   if (!/\.p8\.png$/i.test(file.name)) {
     status.textContent = /\.p8$/i.test(file.name)
-      ? 'Tekstualni .p8 jos nije podrzan. Izaberi .p8.png cartridge.'
-      : 'Izaberi .p8.png cartridge.';
+      ? 'Text-based .p8 files are not supported yet. Select a .p8.png cartridge.'
+      : 'Select a .p8.png cartridge.';
     return;
   }
   if (!file.size || file.size > 1024 * 1024) {
-    status.textContent = 'Cartridge mora biti neprazan fajl manji od 1 MB.';
+    status.textContent = 'The cartridge must be a non-empty file smaller than 1 MB.';
     return;
   }
 
   openButton.disabled = true;
-  status.textContent = 'Ucitavanje...';
+  status.textContent = 'Loading...';
   try {
     const cartridge = decodeCartridge(new Uint8Array(await file.arrayBuffer()));
-    await startPlayer(cartridge, file.name);
+    await startPlayer(cartridge, file);
+    window.p8_give_focus();
     filename.textContent = file.name;
     status.textContent = '';
   } catch (error) {
@@ -104,6 +133,8 @@ fileInput.addEventListener('change', async () => {
   }
 });
 
-startPlayer().catch(error => {
+playerReady.then(() => {
+  openButton.disabled = false;
+}).catch(error => {
   status.textContent = error.message;
 });

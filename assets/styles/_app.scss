@@ -43,7 +43,8 @@ button:hover { background: #ff709b; }
 button:focus-visible { outline: 2px solid #29d8b2; outline-offset: 4px; }
 button:disabled { opacity: 0.5; cursor: wait; }
 
-iframe { display: block; width: 100%; height: min(800px, calc(100vw - 32px)); border: 0; background: #222; }
+#player { display: block; width: 100%; height: min(800px, calc(100vw - 32px)); overflow: hidden; background: #222; }
+#player .p8-style-p8_frame { max-width: 100%; height: min(800px, calc(100vw - 32px)); }
 footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 16px; font-size: 12px; line-height: 1.6; color: var(--muted); }
 footer span { overflow-wrap: anywhere; min-width: 0; }
 #status { color: #ffcc66; }
